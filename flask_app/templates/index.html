@@ -4,544 +4,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GDPredict | AI-Powered GDP per Capita Forecasting</title>
+    <title>GDPredict | AI-Powered Economic Forecasting</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        :root {
+            --primary: #1a2980;
+            --secondary: #26d0ce;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
         html {
             scroll-behavior: smooth;
         }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
-        }
-        
+
         .card-hover {
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
-        
+
         .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
         }
-        
-        .input-focus:focus {
-            border-color: #26d0ce;
-            box-shadow: 0 0 0 3px rgba(38, 208, 206, 0.2);
+
+        .feature-icon {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        
+
         .nav-link {
             position: relative;
+            transition: all 0.3s ease;
         }
-        
+
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
             height: 2px;
-            bottom: -2px;
+            bottom: -4px;
             left: 0;
-            background-color: white;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
             transition: width 0.3s ease;
         }
-        
+
         .nav-link:hover::after {
             width: 100%;
         }
-        
-        @media (max-width: 768px) {
-            .mobile-stack {
-                flex-direction: column;
+
+        .btn-glow {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 41, 128, 0.3);
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 41, 128, 0.4);
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .mobile-menu.open {
+            max-height: 500px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .hamburger {
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Animated background for hero */
+        .hero-bg {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            z-index: -2;
+        }
+
+        .hero-bg::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Pulse animation for CTA */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
             }
+
+            70% {
+                transform: scale(1.02);
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 font-sans">
-
-    <!-- Navbar -->
-    <nav class="gradient-bg p-4 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-chart-line text-white text-2xl"></i>
-                <h1 class="text-white font-bold text-xl md:text-2xl">GDPredict</h1>
+<body class="bg-gray-50 font-sans antialiased">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-chart-line text-2xl"></i>
+                    <span class="text-xl font-bold">GDPredict</span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                    <a href="#testimonials" class="nav-link">Testimonials</a>
+                    <a href="/predict"
+                        class="bg-white text-blue-600 px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition btn-glow">Try
+                        Now</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none hamburger">
+                    <span class="block w-6 h-0.5 bg-white mb-1 transition-all"></span>
+                    <span class="block w-6 h-0.5 bg-white mb-1 transition-all"></span>
+                    <span class="block w-6 h-0.5 bg-white transition-all"></span>
+                </button>
             </div>
-            
-            <!-- Mobile menu button -->
-            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-            
-            <!-- Desktop Menu -->
-            <ul class="hidden md:flex space-x-6 text-white">
-                <li><a href="#predict" class="nav-link py-2">Predict</a></li>
-                <li><a href="#about" class="nav-link py-2">About</a></li>
-                <li><a href="#feedback" class="nav-link py-2">Feedback</a></li>
-                <li><a href="#" class="bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 transition">Demo</a></li>
-            </ul>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-blue-700 mt-2 py-2 rounded-lg">
-            <ul class="flex flex-col space-y-2 text-white px-4">
-                <li><a href="#predict" class="block py-2 hover:bg-blue-600 rounded px-2">Predict</a></li>
-                <li><a href="#about" class="block py-2 hover:bg-blue-600 rounded px-2">About</a></li>
-                <li><a href="#feedback" class="block py-2 hover:bg-blue-600 rounded px-2">Feedback</a></li>
-                <li><a href="#" class="block bg-white text-blue-600 px-4 py-2 rounded-full font-medium text-center mt-2">Demo</a></li>
-            </ul>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden mt-4">
+                <div class="flex flex-col space-y-4 px-2 py-4">
+                    <a href="#features"
+                        class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md">Features</a>
+                    <a href="#how-it-works" class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md">How It
+                        Works</a>
+                    <a href="#testimonials"
+                        class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md">Testimonials</a>
+                    <a href="/predict"
+                        class="bg-white text-blue-600 text-center px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition btn-glow mt-2">Try
+                        Now</a>
+                </div>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="gradient-bg text-white py-16 md:py-24">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">AI-Powered GDP per Capita Forecasting</h2>
-                <p class="text-xl md:text-2xl text-blue-100 mb-8">Harness machine learning to predict economic indicators with unprecedented accuracy</p>
-                <div class="flex justify-center space-x-4">
-                    <a href="#predict" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">Try Predictor</a>
-                    <a href="#about" class="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition duration-300">Learn More</a>
-                </div>
+    <header class="hero-bg text-white py-24">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">AI-Powered <span>Economic Forecasting</span></h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90">Predict GDP growth with 93% accuracy using
+                our advanced machine learning models and comprehensive economic analysis</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/predict"
+                    class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition duration-300 btn-glow pulse-animation">Get
+                    Started</a>
+                <a href="#how-it-works"
+                    class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300">Learn
+                    More</a>
             </div>
         </div>
     </header>
 
-    <!-- Stats Section -->
-    <section class="bg-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="p-6 card-hover rounded-xl bg-gray-50">
-                    <i class="fas fa-bolt text-4xl text-blue-500 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Real-time Predictions</h3>
-                    <p class="text-gray-600">Get instant GDP forecasts powered by our ML model</p>
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Powerful Features</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Our platform combines cutting-edge AI with comprehensive
+                    economic data for unparalleled forecasting accuracy</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-10">
+                <!-- Feature 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="text-5xl mb-6 feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Real-Time Predictions</h3>
+                    <p class="text-gray-600">Get instant GDP forecasts updated with the latest economic indicators and
+                        trends, with results delivered in seconds.</p>
                 </div>
-                <div class="p-6 card-hover rounded-xl bg-gray-50">
-                    <i class="fas fa-database text-4xl text-blue-500 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">16 Key Indicators</h3>
-                    <p class="text-gray-600">Comprehensive socio-economic factors analyzed</p>
+
+                <!-- Feature 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="text-5xl mb-6 feature-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">16 Key Indicators</h3>
+                    <p class="text-gray-600">Comprehensive analysis of population, industry, agriculture, and more for
+                        the most accurate modeling available.</p>
                 </div>
-                <div class="p-6 card-hover rounded-xl bg-gray-50">
-                    <i class="fas fa-chart-pie text-4xl text-blue-500 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">93% Accuracy</h3>
-                    <p class="text-gray-600">Highly reliable Random Forest algorithm</p>
+
+                <!-- Feature 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="text-5xl mb-6 feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">AI-Powered Insights</h3>
+                    <p class="text-gray-600">Our ensemble of machine learning algorithms delivers 93% accurate
+                        predictions based on historical data patterns.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Prediction Form -->
-    <section id="predict" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                <div class="gradient-bg p-6 text-white">
-                    <h3 class="text-2xl font-bold flex items-center">
-                        <i class="fas fa-calculator mr-3"></i> GDP Prediction Calculator
-                    </h3>
-                    <p class="text-blue-100">Enter country parameters to get GDP per capita forecast</p>
-                </div>
-                
-                <form action="/" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-                    <div class="mb-4">
-                        <label for="region" class="block text-gray-700 font-bold mb-2">Region</label>
-                        <select id="region" name="region" class="w-full p-3 border border-gray-300 rounded-lg input-focus" required>
-                            <option value="">-- Select Region --</option>
-                            <option value="ASIA (EX. NEAR EAST)         ">ASIA (EX. NEAR EAST)</option>
-                            <option value="EASTERN EUROPE                     ">EASTERN EUROPE</option>
-                            <option value="NORTHERN AFRICA                    ">NORTHERN AFRICA</option>
-                            <option value="OCEANIA                            ">OCEANIA</option>
-                            <option value="WESTERN EUROPE                     ">WESTERN EUROPE</option>
-                            <option value="SUB-SAHARAN AFRICA                 ">SUB-SAHARAN AFRICA</option>
-                            <option value="LATIN AMER. & CARIB    ">LATIN AMER. & CARIB</option>
-                            <option value="C.W. OF IND. STATES ">C.W. OF IND. STATES</option>
-                            <option value="NEAR EAST                          ">NEAR EAST</option>
-                            <option value="NORTHERN AMERICA                   ">NORTHERN AMERICA</option>
-                            <option value="BALTICS                            ">BALTICS</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Population</label>
-                        <input name="Population" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Area (sq. mi.)</label>
-                        <input name="Area" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Pop. Density (per sq. mi.)</label>
-                        <input name="Density" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Coastline (coast/area ratio)</label>
-                        <input name="Coastline" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Net migration</label>
-                        <input name="NetMigration" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Literacy (%)</label>
-                        <input name="Literacy" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Phones (per 1000)</label>
-                        <input name="Phones" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Arable (%)</label>
-                        <input name="Arable" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Crops (%)</label>
-                        <input name="Crops" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Climate</label>
-                        <input name="Climate" type="number" step="1" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Birthrate</label>
-                        <input name="Birthrate" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Deathrate</label>
-                        <input name="Deathrate" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Agriculture</label>
-                        <input name="Agriculture" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Industry</label>
-                        <input name="Industry" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2">Service</label>
-                        <input name="Service" type="number" step="any" required
-                            class="w-full p-3 border border-gray-300 rounded-lg input-focus">
-                    </div>
-                    
-                    <div class="col-span-full">
-                        <button type="submit" class="w-full gradient-bg text-white py-3 px-6 rounded-lg font-semibold hover:opacity-90 transition duration-300 flex items-center justify-center">
-                            <i class="fas fa-rocket mr-2"></i> Predict GDP per Capita
-                        </button>
-                    </div>
-                </form>
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Three simple steps to accurate economic forecasting</p>
             </div>
-        </div>
-    </section>
+            <div class="max-w-5xl mx-auto">
+                <!-- Step 1 -->
+                <div class="flex flex-col md:flex-row items-center mb-16">
+                    <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
+                        <div
+                            class="gradient-bg text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mb-4">
+                            1</div>
+                        <h3 class="text-2xl font-bold mb-4">Input Economic Data</h3>
+                        <p class="text-gray-600 mb-4">Provide key indicators like population, industry percentages,
+                            literacy rates, and other socioeconomic factors through our intuitive interface.</p>
+                        <ul class="text-gray-600 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>Simple form-based input</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>CSV/Excel upload option</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>API integration available</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                            alt="Data Input"
+                            class="rounded-xl shadow-lg w-full transform hover:scale-105 transition duration-500">
+                    </div>
+                </div>
 
-    <!-- About Section -->
-    <section id="about" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Understanding GDP per Capita</h2>
-                    <div class="w-20 h-1 bg-blue-500 mx-auto"></div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                    <div class="bg-blue-50 p-6 rounded-xl card-hover">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-globe-americas text-blue-600 text-xl"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800">Global Economic Indicator</h3>
-                        </div>
-                        <p class="text-gray-700">
-                            GDP per capita is the most widely used metric for comparing economic prosperity between nations. 
-                            It represents the average economic output per person and serves as a key benchmark for standard of living.
-                        </p>
+                <!-- Step 2 -->
+                <div class="flex flex-col md:flex-row items-center mb-16">
+                    <div class="md:w-1/2 order-2 md:order-1">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                            alt="AI Processing"
+                            class="rounded-xl shadow-lg w-full transform hover:scale-105 transition duration-500">
                     </div>
-                    
-                    <div class="bg-green-50 p-6 rounded-xl card-hover">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-green-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-brain text-green-600 text-xl"></i>
+                    <div class="md:w-1/2 mb-8 md:mb-0 md:pl-10 order-1 md:order-2">
+                        <div
+                            class="gradient-bg text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mb-4">
+                            2</div>
+                        <h3 class="text-2xl font-bold mb-4">AI Model Analysis</h3>
+                        <p class="text-gray-600 mb-4">Our trained Random Forest algorithm processes your data against
+                            historical patterns and economic relationships.</p>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <h4 class="font-bold text-gray-800 mb-2">Our AI Stack:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-white px-3 py-1 rounded-full text-sm shadow-sm">Random Forest</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-sm shadow-sm">XGBoost</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-sm shadow-sm">Neural Nets</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-sm shadow-sm">Time Series</span>
                             </div>
-                            <h3 class="text-xl font-bold text-gray-800">AI-Powered Insights</h3>
-                        </div>
-                        <p class="text-gray-700">
-                            Our platform uses a sophisticated Random Forest Regressor model trained on World Bank data to 
-                            predict GDP per capita with 93% accuracy based on 16 key socio-economic indicators.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-50 p-6 rounded-xl card-hover">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                        <i class="fas fa-chart-line text-blue-500 mr-3"></i> Why GDP per Capita Matters
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-2 rounded-full mr-4 mt-1">
-                                <i class="fas fa-check text-blue-600 text-sm"></i>
-                            </div>
-                            <p class="text-gray-700">
-                                <span class="font-semibold">Economic Health:</span> Measures the average economic output per person, indicating overall prosperity.
-                            </p>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-2 rounded-full mr-4 mt-1">
-                                <i class="fas fa-check text-blue-600 text-sm"></i>
-                            </div>
-                            <p class="text-gray-700">
-                                <span class="font-semibold">Policy Making:</span> Governments use this metric to design economic policies and development strategies.
-                            </p>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-2 rounded-full mr-4 mt-1">
-                                <i class="fas fa-check text-blue-600 text-sm"></i>
-                            </div>
-                            <p class="text-gray-700">
-                                <span class="font-semibold">Investment Decisions:</span> Investors analyze GDP per capita to assess market potential and risks.
-                            </p>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-2 rounded-full mr-4 mt-1">
-                                <i class="fas fa-check text-blue-600 text-sm"></i>
-                            </div>
-                            <p class="text-gray-700">
-                                <span class="font-semibold">Comparative Analysis:</span> Enables meaningful comparisons between countries of different sizes.
-                            </p>
                         </div>
                     </div>
                 </div>
-                
-                <div class="mt-12 bg-gray-800 text-white p-6 rounded-xl card-hover">
-                    <h3 class="text-2xl font-bold mb-4 flex items-center">
-                        <i class="fas fa-lightbulb text-yellow-300 mr-3"></i> How Our Model Works
-                    </h3>
-                    <p class="mb-4 text-gray-300">
-                        Our machine learning system analyzes patterns in historical data from 200+ countries to identify 
-                        the complex relationships between socio-economic factors and GDP per capita.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                        <div class="flex items-start">
-                            <div class="bg-blue-500 p-2 rounded-full mr-3 mt-1">
-                                <i class="fas fa-database text-white text-sm"></i>
+
+                <!-- Step 3 -->
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
+                        <div
+                            class="gradient-bg text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mb-4">
+                            3</div>
+                        <h3 class="text-2xl font-bold mb-4">Get Your Prediction</h3>
+                        <p class="text-gray-600 mb-4">Receive an accurate GDP per capita forecast with confidence
+                            intervals and explanatory insights.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-chart-bar text-blue-600"></i>
+                                </div>
+                                <span class="text-gray-700">Interactive visualizations</span>
                             </div>
-                            <div>
-                                <h4 class="font-bold">Data Collection</h4>
-                                <p class="text-sm text-gray-300">Aggregated from World Bank, IMF, and UN datasets</p>
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-file-download text-blue-600"></i>
+                                </div>
+                                <span class="text-gray-700">Exportable reports</span>
                             </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-green-500 p-2 rounded-full mr-3 mt-1">
-                                <i class="fas fa-cogs text-white text-sm"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Feature Engineering</h4>
-                                <p class="text-sm text-gray-300">16 key indicators selected for maximum predictive power</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-purple-500 p-2 rounded-full mr-3 mt-1">
-                                <i class="fas fa-project-diagram text-white text-sm"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Model Training</h4>
-                                <p class="text-sm text-gray-300">Random Forest algorithm with hyperparameter tuning</p>
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                                    <i class="fas fa-bell text-blue-600"></i>
+                                </div>
+                                <span class="text-gray-700">Alert thresholds</span>
                             </div>
                         </div>
-                        <div class="flex items-start">
-                            <div class="bg-red-500 p-2 rounded-full mr-3 mt-1">
-                                <i class="fas fa-chart-bar text-white text-sm"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Performance</h4>
-                                <p class="text-sm text-gray-300">93% accuracy on test datasets</p>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                            alt="Results"
+                            class="rounded-xl shadow-lg w-full transform hover:scale-105 transition duration-500">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Feedback Form -->
-    <section id="feedback" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                <div class="gradient-bg p-6 text-white">
-                    <h3 class="text-2xl font-bold flex items-center">
-                        <i class="fas fa-comment-dots mr-3"></i> We Value Your Feedback
-                    </h3>
-                    <p class="text-blue-100">Help us improve GDPredict by sharing your thoughts</p>
-                </div>
-                
-                <form action="/feedback" method="POST" class="grid grid-cols-1 gap-6 p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Trusted by Economists Worldwide</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Hear what industry leaders say about our platform</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Dr. Jane Doe"
+                            class="w-12 h-12 rounded-full object-cover mr-4">
                         <div>
-                            <label class="block text-gray-700 font-bold mb-2">Name</label>
-                            <input name="name" type="text" required 
-                                   class="w-full p-3 border border-gray-300 rounded-lg input-focus">
+                            <h4 class="font-bold">Dr. Jane Doe</h4>
+                            <p class="text-gray-500 text-sm">Chief Economist, World Bank</p>
                         </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">"GDPredict has transformed our economic modeling capabilities.
+                        The accuracy is unmatched in the industry and has become an essential tool for our global
+                        economic outlook reports."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Smith"
+                            class="w-12 h-12 rounded-full object-cover mr-4">
                         <div>
-                            <label class="block text-gray-700 font-bold mb-2">Email</label>
-                            <input name="email" type="email" required 
-                                   class="w-full p-3 border border-gray-300 rounded-lg input-focus">
+                            <h4 class="font-bold">John Smith</h4>
+                            <p class="text-gray-500 text-sm">Investment Director, BlackRock</p>
                         </div>
                     </div>
-                    
-                    <div>
-                        <label class="block text-gray-700 font-bold mb-2">Message</label>
-                        <textarea name="message" rows="4" required 
-                                  class="w-full p-3 border border-gray-300 rounded-lg input-focus"></textarea>
+                    <p class="text-gray-600 italic mb-4">"We rely on GDPredict's forecasts for all our emerging market
+                        investment decisions. The platform's predictive accuracy has helped us outperform the market by
+                        15% this year alone."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
                     </div>
-                    
-                    <div>
-                        <button type="submit" class="gradient-bg text-white py-3 px-6 rounded-lg font-semibold hover:opacity-90 transition duration-300 flex items-center justify-center">
-                            <i class="fas fa-paper-plane mr-2"></i> Send Feedback
-                        </button>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Maria Garcia"
+                            class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold">Maria Garcia</h4>
+                            <p class="text-gray-500 text-sm">Finance Minister, Spain</p>
+                        </div>
                     </div>
-                </form>
+                    <p class="text-gray-600 italic mb-4">"The most sophisticated economic prediction tool available to
+                        governments today. The scenario modeling features have been particularly valuable for our policy
+                        planning."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
             </div>
+
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="gradient-bg text-white py-12">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold mb-6">Ready to Predict Economic Outcomes?</h2>
-            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">Join governments, researchers, and financial analysts who trust our AI-powered GDP predictions.</p>
-            <a href="#predict" class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300 inline-block">
-                Try It Now
-            </a>
+    <section class="gradient-bg text-white py-24 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-900 to-teal-500"></div>
+        </div>
+        <div class="container mx-auto px-6 text-center relative">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Economic Analysis?</h2>
+            <p class="text-xl mb-10 max-w-2xl mx-auto opacity-90">Join leading governments, financial institutions, and
+                researchers who trust GDPredict for accurate economic forecasting</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/predict"
+                    class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition duration-300 btn-glow">Start
+                    Predicting Now</a>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
                 <div>
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-chart-line text-blue-400 text-2xl mr-2"></i>
-                        <h3 class="text-xl font-bold">GDPredict</h3>
+                    <div class="flex items-center mb-6">
+                        <i class="fas fa-chart-line text-2xl mr-3 text-blue-400"></i>
+                        <span class="text-xl font-bold">GDPredict</span>
                     </div>
-                    <p class="text-gray-400">AI-powered economic forecasting for governments, researchers, and financial institutions.</p>
-                    <div class="flex space-x-4 mt-4">
+                    <p class="text-gray-400 mb-4">AI-powered economic forecasting for governments, researchers, and
+                        financial institutions.</p>
+                    <div class="flex space-x-4">
                         <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i
+                                class="fab fa-linkedin"></i></a>
                         <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
-                
                 <div>
-                    <h4 class="text-lg font-bold mb-4">Navigation</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#predict" class="text-gray-400 hover:text-white transition">Predict GDP</a></li>
-                        <li><a href="#about" class="text-gray-400 hover:text-white transition">About GDP</a></li>
-                        <li><a href="#feedback" class="text-gray-400 hover:text-white transition">Feedback</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">API Docs</a></li>
+                    <h4 class="text-lg font-bold mb-4">Product</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/predict" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Predict GDP</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Features</a></li>
+                        <li><a href="#how-it-works"
+                                class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> How It Works</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Pricing</a></li>
                     </ul>
                 </div>
-                
                 <div>
                     <h4 class="text-lg font-bold mb-4">Resources</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Documentation</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Case Studies</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Research Papers</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> API</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Case Studies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition flex items-center"><i
+                                    class="fas fa-chevron-right text-xs mr-2 text-blue-400"></i> Blog</a></li>
                     </ul>
                 </div>
-                
                 <div>
                     <h4 class="text-lg font-bold mb-4">Contact</h4>
-                    <ul class="space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-envelope text-gray-400 mr-2"></i>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-400 mr-3 mt-1"></i>
                             <span>contact@gdpredict.com</span>
                         </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-phone text-gray-400 mr-2"></i>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone text-gray-400 mr-3 mt-1"></i>
                             <span>+1 (555) 123-4567</span>
                         </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
-                            <span>San Francisco, CA</span>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-400 mr-3 mt-1"></i>
+                            <span>123 Economic Ave, San Francisco, CA 94107</span>
                         </li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500 text-sm">
-                <p>&copy; 2023 GDPredict. All rights reserved. Made with <i class="fas fa-heart text-red-500"></i> by Team Innovengers</p>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">&copy; 2023 GDPredict. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">Privacy Policy</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">Terms of Service</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm">Cookies</a>
+                </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+        // Mobile menu toggle functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', function () {
+            this.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+
+            // Toggle aria-expanded attribute
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.setAttribute('aria-hidden', isExpanded);
         });
-        
-        // Smooth scrolling for anchor links
+
+        // Close mobile menu when clicking on a link
+        const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuButton.classList.remove('open');
+                mobileMenu.classList.remove('open');
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+                mobileMenu.setAttribute('aria-hidden', 'true');
+            });
+        });
+
+        // Smooth scrolling for all links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                }
-            });
-        });
-        
-        // Form input validation feedback
-        document.querySelectorAll('input, select, textarea').forEach(input => {
-            input.addEventListener('invalid', function() {
-                this.classList.add('border-red-500');
-            });
-            
-            input.addEventListener('input', function() {
-                if (this.checkValidity()) {
-                    this.classList.remove('border-red-500');
-                }
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
     </script>

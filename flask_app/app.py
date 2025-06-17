@@ -26,6 +26,11 @@ le_region = pickle.load(open('label_encoder.pkl', 'rb'))
 scaler = pickle.load(open('scaler.pkl', 'rb'))
 
 @app.route('/', methods=['GET', 'POST'])
+def home():
+    return render_template('index.html')
+
+
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
     if request.method == 'POST':
         try:
@@ -86,7 +91,7 @@ def predict():
         except Exception as e:
             return f"Error: {e}"
 
-    return render_template('index.html')
+    return render_template('predict.html')
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
