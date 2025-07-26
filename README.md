@@ -37,7 +37,7 @@ GDP per capita is a central indicator of economic well-being. With AI's rise, fo
 
 ## 🔗 Live Demo
 
-👉 [Launch App](#) https://gdpredict.onrender.com/
+👉 Launch App https://gdpredict.onrender.com/
 
 ## 🙌 Feedback & Contributions
 
